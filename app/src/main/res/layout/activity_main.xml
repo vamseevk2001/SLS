@@ -26,245 +26,295 @@
         </androidx.appcompat.widget.Toolbar>
 
 
-            <LinearLayout
-                android:id="@+id/layout"
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="Location"
+                android:textColor="@color/blue"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="6dp"
-                android:orientation="vertical"
-                android:layout_below="@id/toolbar"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="Country"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/blue"
-                    android:text="Location"/>
-
-                <Spinner
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/country"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"/>
+                    android:inputType="text" />
 
-                <Spinner
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <Spinner-->
+<!--                android:id="@+id/country"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="State"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"/>
+                    android:inputType="text" />
 
-                <Spinner
-                    android:id="@+id/district"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="City"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"/>
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <Spinner-->
+<!--                android:id="@+id/state"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/city"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="NAME"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameInp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="NAME"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:inputType="text" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/nameInp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="COMPANY NAME"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/companyName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="COMPANY NAME"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:inputType="text" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/companyName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="GST NO."
+                app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                addressProof
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/gstNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="GST NO."
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:inputType="number" />
 
-                    addressProof<com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/gstNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="ADDRESS"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="MOBILE NO."
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mobileNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="ADDRESS"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:inputType="phone" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/address"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:gravity="top"
-                        android:overScrollMode="always"
-                        android:scrollbarStyle="insideInset"
-                        android:scrollbars="vertical"
-                        android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="EMAIL ID"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="MOBILE NO."
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:inputType="text" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/mobileNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Purpose :"
+                android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <RadioGroup
+                android:id="@+id/purpose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <RadioButton
+                    android:id="@+id/Home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="EMAIL ID"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:layout_marginStart="16dp"
+                    android:checked="true"
+                    android:text="Home" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_margin="4dp"
-                    android:text="Purpose :"/>
-
-                <RadioGroup
-                    android:id="@+id/purpose"
+                <RadioButton
+                    android:id="@+id/official"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <RadioButton
-                        android:id="@+id/Home"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:layout_marginStart="16dp"
-                        android:text="Home" />
+                    android:layout_marginStart="16dp"
+                    android:text="Official" />
 
 
-                    <RadioButton
-                        android:id="@+id/official"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Official" />
+            </RadioGroup>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="OTT Required :"
+                android:textStyle="bold" />
 
+            <RadioGroup
+                android:id="@+id/ott"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent">
 
-                </RadioGroup>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_margin="4dp"
-                    android:text="OTT Required :"/>
-
-                <RadioGroup
-                    android:id="@+id/ott"
+                <RadioButton
+                    android:id="@+id/ottYes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:layout_marginStart="16dp"
+                    android:checked="true"
+                    android:text="Yes" />
 
-                    <RadioButton
-                        android:id="@+id/ottYes"
-                        android:checked="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Yes"
-                         />
-
-                    <RadioButton
-                        android:id="@+id/ottNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="No" />
-
-
-                </RadioGroup>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <RadioButton
+                    android:id="@+id/ottNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Location Google Maps"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tagsInp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginStart="16dp"
+                    android:text="No" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/blue"
-                    android:text="Documents"/>
+            </RadioGroup>
 
 
-                <RelativeLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="Location Google Maps"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tagsInp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="Documents"
+                android:textColor="@color/blue"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/aadharcardLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -283,96 +333,95 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Upload"
-                        android:layout_alignTop="@+id/aadharcardLayout"
-                        android:layout_alignBottom="@+id/aadharcardLayout"
-                        android:layout_alignRight="@+id/aadharcardLayout"
-                        android:layout_margin="5dp"
-                        android:backgroundTint="@color/blue"
-                        android:gravity="center_vertical"
-                         />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/aadharcardLayout"
+                    android:layout_alignRight="@+id/aadharcardLayout"
+                    android:layout_alignBottom="@+id/aadharcardLayout"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/blue"
+                    android:gravity="center_vertical"
+                    android:text="Upload" />
 
-                </RelativeLayout>
+            </RelativeLayout>
 
-                <RelativeLayout
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/addressLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/addressLayout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:hint="Address Proof"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/addressProof"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Address Proof"
-                        app:layout_constraintStart_toStartOf="parent">
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:inputType="date" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/addressProof"
-                            android:layout_width="match_parent"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:layout_height="wrap_content"
-                            android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/addressLayout"
+                    android:layout_alignRight="@+id/addressLayout"
+                    android:layout_alignBottom="@+id/addressLayout"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/blue"
+                    android:gravity="center_vertical"
+                    android:text="Upload" />
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Upload"
-                        android:layout_alignTop="@+id/addressLayout"
-                        android:layout_alignBottom="@+id/addressLayout"
-                        android:layout_alignRight="@+id/addressLayout"
-                        android:backgroundTint="@color/blue"
-                        android:layout_margin="5dp"
-                        android:gravity="center_vertical"
-                        />
+            </RelativeLayout>
 
-                </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp">
 
-                <RelativeLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/drivingLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/drivingLayout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:hint="Driving License"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/drivingLicense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Driving License"
-                        app:layout_constraintStart_toStartOf="parent">
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:inputType="date" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/drivingLicense"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Upload"
-                        android:layout_alignTop="@+id/drivingLayout"
-                        android:layout_alignBottom="@+id/drivingLayout"
-                        android:backgroundTint="@color/blue"
-                        android:layout_alignRight="@+id/drivingLayout"
-                        android:layout_margin="5dp"
-                        android:gravity="center_vertical"
-                        />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
+                    android:layout_alignTop="@+id/drivingLayout"
+                    android:layout_alignRight="@+id/drivingLayout"
+                    android:layout_alignBottom="@+id/drivingLayout"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/blue"
+                    android:gravity="center_vertical"
+                    android:text="Upload" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/selfieLayout"
@@ -395,68 +444,65 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Upload"
                     android:layout_alignTop="@+id/selfieLayout"
-                    android:layout_alignBottom="@+id/selfieLayout"
-                    android:backgroundTint="@color/blue"
                     android:layout_alignRight="@+id/selfieLayout"
+                    android:layout_alignBottom="@+id/selfieLayout"
                     android:layout_margin="5dp"
+                    android:backgroundTint="@color/blue"
                     android:gravity="center_vertical"
-                    />
+                    android:text="Upload" />
 
-                </RelativeLayout>
+            </RelativeLayout>
 
-                <RelativeLayout
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
+                    android:hint="Upload your signature"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/signLayout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signature"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Upload your signature"
-                        app:layout_constraintStart_toStartOf="parent">
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:inputType="text" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/signature"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:inputType="text" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Upload"
-                        android:layout_alignTop="@+id/signLayout"
-                        android:layout_alignBottom="@+id/signLayout"
-                        android:backgroundTint="@color/blue"
-                        android:layout_alignRight="@+id/signLayout"
-                        android:layout_margin="5dp"
-                        android:gravity="center_vertical"
-                        />
-
-                </RelativeLayout>
-
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/submit"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
+                    android:layout_alignTop="@+id/signLayout"
+                    android:layout_alignRight="@+id/signLayout"
+                    android:layout_alignBottom="@+id/signLayout"
+                    android:layout_margin="5dp"
                     android:backgroundTint="@color/blue"
-                    android:text="Submit" />
+                    android:gravity="center_vertical"
+                    android:text="Upload" />
+
+            </RelativeLayout>
 
 
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:backgroundTint="@color/blue"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Submit" />
 
-            </LinearLayout>
+
+        </LinearLayout>
 
 
 
