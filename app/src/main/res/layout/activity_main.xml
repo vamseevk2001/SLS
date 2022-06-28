@@ -334,6 +334,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
+                    android:id="@+id/uploadAadhar"
+                    android:onClick="uploadAadhar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/aadharcardLayout"
@@ -370,6 +372,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
+                    android:id="@+id/uploadAddress"
+                    android:onClick="uploadAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/addressLayout"
@@ -406,6 +410,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
+                    android:id="@+id/uploadDriving"
+                    android:onClick="uploadDriving"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/drivingLayout"
@@ -442,6 +448,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
+                    android:id="@+id/uploadSelfie"
+                    android:onClick="uploadSelfie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/selfieLayout"
@@ -478,6 +486,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
+                    android:id="@+id/uploadSign"
+                    android:onClick="uploadsignature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/signLayout"
