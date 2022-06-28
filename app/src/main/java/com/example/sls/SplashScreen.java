@@ -1,7 +1,5 @@
 package com.example.sls;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.UiModeManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +9,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-public class SplashScreen extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+//import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
+public class SplashScreen extends AppCompatActivity implements Animation.AnimationListener{
 
     ImageView logo;
     private UiModeManager uiModeManager;
     Handler handler;
     private static int SPLASH_SCREEN_TIME_OUT = 2000;
+    Animation animZoomOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +34,43 @@ public class SplashScreen extends AppCompatActivity {
         uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
         uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
 
-        handler = new Handler();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }
-        }, SPLASH_SCREEN_TIME_OUT);
+        animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.zoom_in);
+
+        animZoomOut.setAnimationListener(SplashScreen.this);
+
+        logo.startAnimation(animZoomOut);
+//        handler = new Handler();
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent i = new Intent(SplashScreen.this, MainActivity.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        }, SPLASH_SCREEN_TIME_OUT);
 
     }
 
 
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        if (animation == animZoomOut) {
+
+            Intent i = new Intent(SplashScreen.this, MainActivity.class);
+            startActivity(i);
+            //Animatoo.animateSlideRight(SplashScreen.this);
+        }
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
 }
