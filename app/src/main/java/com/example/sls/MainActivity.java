@@ -34,6 +34,7 @@ import java.lang.reflect.Array;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     Boolean validated = false;
     private final static String TAG = "countryspinnerexample";
-    private JSONArray jsonCountryArray;
-    private AutoCompleteTextView countrySpinner;
-    private AutoCompleteTextView stateSpinner;
-    private AutoCompleteTextView citySpinner;
+    private AutoCompleteTextView location;
 
     private static final int PICK_FROM_GALLERY = 101;
     private static final int ADDRESS = 102;
@@ -65,10 +63,12 @@ public class MainActivity extends AppCompatActivity {
         binding.toolbar.setTitle("Smart Link Solutions");
         setContentView(view);
 
-        countrySpinner = binding.country;
-        stateSpinner = binding.state;
-        citySpinner = binding.city;
-        populateSpinner();
+        String[] centers = new String[]{"BARDOLI", "VYARA", "BHOPAL", "RAIPUR", "BHILAI", "BARGAHR",
+                "SAMBALPUR", "BHUBANESWAR", "CORPORATE", "TILDA", "INDORE", "MALIBA", "UNITEL"};
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.select_dialog_item, centers);
+        binding.center.setAdapter(adapter);
 
 
         binding.submit.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 validated = validate();
                 if (validated) {
                 StringBuilder mailBody = new StringBuilder();
+                mailBody.append("Locaion : " + binding.center.getSelectedItem().toString() + "\n");
                 mailBody.append("Name : " + binding.nameInp.getText().toString() + "\n");
                 mailBody.append("Company Name : " + binding.companyName.getText().toString() + "\n");
                 mailBody.append("GST no. : " + binding.gstNo.getText().toString() + "\n");
@@ -94,25 +95,12 @@ public class MainActivity extends AppCompatActivity {
                 else
                     mailBody.append("OTT required : " + "No" + "\n");
 
-//                Intent email = new Intent(Intent.ACTION_SENDTO);
-//                email.setData(Uri.parse("mailto:"));
-//                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"vamseevk9390@gmail.com"});
-//                email.putExtra(Intent.EXTRA_SUBJECT, "New Smart Link");
-//                email.putExtra(Intent.EXTRA_TEXT, mailBody.toString());
-//                if (URI != null) {
-//                    email.putExtra(Intent.EXTRA_STREAM, URI);
-//                }
-//                startActivity(Intent.createChooser(email, "Choose an Email client :"));
-//                Toast.makeText(getApplicationContext(), "submitted successfully !", Toast.LENGTH_SHORT).show();
                 final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                //emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("plain/text");
                 emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"vamseevk9390@gmail.com"});
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "New Smart List");
 
                 ArrayList<Uri> uris = new ArrayList<Uri>();
-                //convert from paths to Android friendly Parcelable Uri's
-
 
                 if (aadhaarURI != null) {
                     uris.add(aadhaarURI);
@@ -120,16 +108,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (addressURI != null) {
                     uris.add(addressURI);
-                    //emailIntent.putExtra(Intent.EXTRA_STREAM, addressURI);
                 }
 
                 if (drivingURI != null) {
                     uris.add(drivingURI);
-//                    emailIntent.putExtra(Intent.EXTRA_STREAM, drivingURI);
                 }
                 if (selfieURI != null) {
                     uris.add(selfieURI);
-//                    emailIntent.putExtra(Intent.EXTRA_STREAM, selfieURI);
                 }
 
                 if (signatureURI != null) {
@@ -151,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
 
     boolean validate() {
 
+        if (binding.center.getSelectedItem().toString().length() == 0) {
+            Toast.makeText(this,"This field is required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         if (binding.nameInp.length() == 0) {
             binding.nameInp.setError("This field is required");
             return false;
@@ -170,6 +160,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (binding.mobileNo.length() == 0) {
             binding.mobileNo.setError("This field is required");
+            return false;
+        }else if(binding.mobileNo.length() != 10){
+            binding.mobileNo.setError("mobile no. should be 10 digits");
+            return false;
+        }
+
+        if (binding.email.length() == 0) {
+            binding.email.setError("This field is required");
+            return false;
+        }
+
+        if(!patternMatches(binding.email.getText().toString(), "^(.+)@(\\S+)$")){
+            binding.email.setError("Enter a valid Email id");
             return false;
         }
 
@@ -201,114 +204,18 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void populateSpinner() {
-        try {
-            jsonCountryArray = new JSONObject(loadJSONFromAsset()).optJSONArray("country");
-
-            ArrayList<String> countryList = new ArrayList<>();
-
-            for (int i = 0; i < jsonCountryArray.length(); i++) {
-                countryList.add(jsonCountryArray.optJSONObject(i).optString("name"));
-            }
-
-            ArrayAdapter<String> countryListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, countryList);
-
-            countrySpinner.setAdapter(countryListAdapter);
-
-            countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    ArrayList<String> stateArray = new ArrayList<>();
-
-                    final JSONArray jsonStateArray = jsonCountryArray.optJSONObject(position).optJSONArray("state");
-
-                    for (int i = 0; i < jsonStateArray.length(); i++) {
-                        stateArray.add(jsonStateArray.optJSONObject(i).optString("name"));
-                    }
-
-                    ArrayAdapter<String> stateListAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, stateArray);
-
-                    stateSpinner.setAdapter(stateListAdapter);
-
-                    stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            final ArrayList<String> cityArray = new ArrayList<>();
-
-                            final JSONArray jsonCityArray = jsonStateArray.optJSONObject(position).optJSONArray("city");
-
-                            for (int i = 0; i < jsonCityArray.length(); i++) {
-                                cityArray.add(jsonCityArray.optJSONObject(i).optString("name"));
-                            }
-
-                            ArrayAdapter<String> cityListAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, cityArray);
-
-                            citySpinner.setAdapter(cityListAdapter);
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                        }
-                    });
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "error=" + e.getMessage());
-        }
+    public static boolean patternMatches(String emailAddress, String regexPattern) {
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
     }
 
-    public String loadJSONFromAsset() {
-        String json;
-        try {
-            InputStream is = getAssets().open("country.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, StandardCharsets.UTF_8);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
 
     void selectImage(int x) {
-//        String[] choice = new String[]{"Take Photo", "Choose from Gallery", "cancel"};
-//        final AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-//        final AlertDialog alertDialog = myAlertDialog.create();
-//        myAlertDialog.setTitle("Select Image");
-//        alertDialog.setCanceledOnTouchOutside(true);
-//        myAlertDialog.setItems(choice, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int item) {
-//                if (choice[item] == "Choose from Gallery") {
         Intent pickFromGallery = new Intent();
         pickFromGallery.setType("image/*");
         pickFromGallery.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(pickFromGallery, "Select Picture"), x);
-//                }
-//                // Select "Take Photo" to take a photo
-//                else if (choice[item] == "Take Photo") {
-//                    Intent cameraPicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(cameraPicture, PICK_FROM_GALLERY);
-//                }
-//
-//                else if (choice[item] == "cancel") {
-//                    alertDialog.dismiss();
-//                }
-//
-//            }
-//        });
-//        myAlertDialog.show();
-
-
     }
 
     @Override
