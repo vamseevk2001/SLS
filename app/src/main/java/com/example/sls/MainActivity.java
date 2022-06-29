@@ -105,11 +105,9 @@ public class MainActivity extends AppCompatActivity {
 //                            .appendQueryParameter("body", mailBody.toString())
 //                            .build();
 
-                    String email = "vamseevk9390@gmail.com";
                     Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
                     selectorIntent.setData(Uri.parse("mailto:"));
                     final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                    //emailIntent.setType("mailto");
                     emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"vamseevk9390@gmail.com"});
                     emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "New Connection Request");
 
