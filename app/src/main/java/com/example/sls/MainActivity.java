@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.sls.databinding.ActivityMainBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         binding.toolbar.setTitle("Smart Link Solutions");
         setContentView(view);
 
+
         String[] centers = new String[]{"BARDOLI", "VYARA", "BHOPAL", "RAIPUR", "BHILAI", "BARGAHR",
                 "SAMBALPUR", "BHUBANESWAR", "CORPORATE", "TILDA", "INDORE", "MALIBA", "UNITEL"};
 
@@ -77,56 +80,73 @@ public class MainActivity extends AppCompatActivity {
 
                 validated = validate();
                 if (validated) {
-                StringBuilder mailBody = new StringBuilder();
-                mailBody.append("Locaion : " + binding.center.getSelectedItem().toString() + "\n");
-                mailBody.append("Name : " + binding.nameInp.getText().toString() + "\n");
-                mailBody.append("Company Name : " + binding.companyName.getText().toString() + "\n");
-                mailBody.append("GST no. : " + binding.gstNo.getText().toString() + "\n");
-                mailBody.append("Address : \n" + binding.address.getText().toString() + "\n");
-                mailBody.append("Mobile No. : " + binding.mobileNo.getText().toString() + "\n");
-                mailBody.append("Email id : " + binding.email.getText().toString() + "\n");
-                if (binding.purpose.getCheckedRadioButtonId() == R.id.Home)
-                    mailBody.append("purpose :" + " Home" + "\n");
-                else
-                    mailBody.append("purpose :" + " Office" + "\n");
+                    StringBuilder mailBody = new StringBuilder();
+                    mailBody.append("Locaion : " + binding.center.getSelectedItem().toString() + "\n");
+                    mailBody.append("Name : " + binding.nameInp.getText().toString() + "\n");
+                    mailBody.append("Company Name : " + binding.companyName.getText().toString() + "\n");
+                    mailBody.append("GST no. : " + binding.gstNo.getText().toString() + "\n");
+                    mailBody.append("Address : \n" + binding.address.getText().toString() + "\n");
+                    mailBody.append("Mobile No. : " + binding.mobileNo.getText().toString() + "\n");
+                    mailBody.append("Email id : " + binding.email.getText().toString() + "\n");
+                    if (binding.purpose.getCheckedRadioButtonId() == R.id.Home)
+                        mailBody.append("purpose :" + " Home" + "\n");
+                    else
+                        mailBody.append("purpose :" + " Office" + "\n");
 
-                if (binding.ott.getCheckedRadioButtonId() == R.id.ottYes)
-                    mailBody.append("OTT required : " + "Yes" + "\n");
-                else
-                    mailBody.append("OTT required : " + "No" + "\n");
-
-                final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                emailIntent.setType("plain/text");
-                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"vamseevk9390@gmail.com"});
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "New Smart List");
-
-                ArrayList<Uri> uris = new ArrayList<Uri>();
-
-                if (aadhaarURI != null) {
-                    uris.add(aadhaarURI);
-                }
-
-                if (addressURI != null) {
-                    uris.add(addressURI);
-                }
-
-                if (drivingURI != null) {
-                    uris.add(drivingURI);
-                }
-                if (selfieURI != null) {
-                    uris.add(selfieURI);
-                }
-
-                if (signatureURI != null) {
-                    uris.add(signatureURI);
-
-                    emailIntent.putExtra(Intent.EXTRA_STREAM, signatureURI);
-                }
+                    if (binding.ott.getCheckedRadioButtonId() == R.id.ottYes)
+                        mailBody.append("OTT required : " + "Yes" + "\n");
+                    else
+                        mailBody.append("OTT required : " + "No" + "\n");
 
 
-                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mailBody.toString());
-                emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-                startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+//                    Uri uri = Uri.parse("mailto:" + "vamseevk9390@gmail.com")
+//                            .buildUpon()
+//                            .appendQueryParameter("subject", "New Connection Request")
+//                            .appendQueryParameter("body", mailBody.toString())
+//                            .build();
+
+                    String email = "vamseevk9390@gmail.com";
+                    Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
+                    selectorIntent.setData(Uri.parse("mailto:"));
+                    final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    //emailIntent.setType("mailto");
+                    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"vamseevk9390@gmail.com"});
+                    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "New Connection Request");
+
+                    ArrayList<Uri> uris = new ArrayList<Uri>();
+
+                    if (aadhaarURI != null) {
+                        uris.add(aadhaarURI);
+                    }
+
+                    if (addressURI != null) {
+                        uris.add(addressURI);
+                    }
+
+                    if (drivingURI != null) {
+                        uris.add(drivingURI);
+                    }
+                    if (selfieURI != null) {
+                        uris.add(selfieURI);
+                    }
+
+                    if (signatureURI != null) {
+                        uris.add(signatureURI);
+
+                        emailIntent.putExtra(Intent.EXTRA_STREAM, signatureURI);
+                    }
+
+
+                    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mailBody.toString());
+                    emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                    emailIntent.setSelector(selectorIntent);
+//                    if (emailIntent.resolveActivity(getPackageManager()) != null) {
+//                        startActivity(emailIntent);
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "Sorry, We couldn't find any email client apps!", Toast.LENGTH_SHORT).show();
+//                    }
+                    startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+                    clear();
                 }
             }
         });
@@ -134,10 +154,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    void clear() {
+        binding.center.setSelection(0);
+        binding.nameInp.getText().clear();
+        binding.companyName.getText().clear();
+        binding.gstNo.getText().clear();
+        binding.address.getText().clear();
+        binding.mobileNo.getText().clear();
+        binding.email.getText().clear();
+        binding.aadharCard.getText().clear();
+        binding.addressProof.getText().clear();
+        binding.drivingLicense.getText().clear();
+        binding.selfie.getText().clear();
+        binding.signature.getText().clear();
+        binding.Home.setSelected(true);
+        binding.ottYes.setSelected(true);
+
+
+    }
+
+
     boolean validate() {
 
         if (binding.center.getSelectedItem().toString().length() == 0) {
-            Toast.makeText(this,"This field is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "This field is required", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -149,10 +189,7 @@ public class MainActivity extends AppCompatActivity {
             binding.companyName.setError("This field is required");
             return false;
         }
-        if (binding.gstNo.length() == 0) {
-            binding.gstNo.setError("This field is required");
-            return false;
-        }
+
         if (binding.address.length() == 0) {
             binding.address.setError("This field is required");
             return false;
@@ -161,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         if (binding.mobileNo.length() == 0) {
             binding.mobileNo.setError("This field is required");
             return false;
-        }else if(binding.mobileNo.length() != 10){
+        } else if (binding.mobileNo.length() != 10) {
             binding.mobileNo.setError("mobile no. should be 10 digits");
             return false;
         }
@@ -171,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        if(!patternMatches(binding.email.getText().toString(), "^(.+)@(\\S+)$")){
+        if (!patternMatches(binding.email.getText().toString(), "^(.+)@(\\S+)$")) {
             binding.email.setError("Enter a valid Email id");
             return false;
         }
@@ -186,10 +223,10 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        if (binding.drivingLicense.length() == 0) {
-            Toast.makeText(this, "upload your driving license", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+//        if (binding.drivingLicense.length() == 0) {
+//            Toast.makeText(this, "upload your driving license", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
 
         if (binding.selfie.length() == 0) {
             Toast.makeText(this, "upload your selfie", Toast.LENGTH_SHORT).show();
@@ -278,21 +315,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void uploadAadhar(View view) {
         Intent pdfIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        pdfIntent.setType("application/pdf");
+        pdfIntent.setType("image/*|application/pdf");
+        String[] mimeTypes = new String[]{"image/*", "application/pdf"};
+        pdfIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         pdfIntent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(pdfIntent, AADHAAR);
     }
 
     public void uploadAddress(View view) {
         Intent pdfIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        pdfIntent.setType("application/pdf");
+        pdfIntent.setType("image/*|application/pdf");
+        String[] mimeTypes = new String[]{"image/*", "application/pdf"};
+        pdfIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         pdfIntent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(pdfIntent, ADDRESS);
     }
 
     public void uploadDriving(View view) {
         Intent pdfIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        pdfIntent.setType("application/pdf");
+        pdfIntent.setType("image/*|application/pdf");
+        String[] mimeTypes = new String[]{"image/*", "application/pdf"};
+        pdfIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         pdfIntent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(pdfIntent, DRIVING);
     }

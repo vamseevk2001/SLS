@@ -197,6 +197,7 @@
                 android:id="@+id/purpose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <RadioButton
@@ -204,6 +205,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_weight="1"
                     android:checked="true"
                     android:text="Home" />
 
@@ -213,6 +215,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_weight="1"
                     android:text="Official" />
 
 
@@ -229,6 +232,7 @@
                 android:id="@+id/ott"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <RadioButton
@@ -237,12 +241,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:checked="true"
+                    android:layout_weight="1"
                     android:text="Yes" />
 
                 <RadioButton
                     android:id="@+id/ottNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginStart="16dp"
                     android:text="No" />
 

@@ -11,8 +11,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-
 public class SplashScreen extends AppCompatActivity implements Animation.AnimationListener{
 
     ImageView logo;
@@ -40,15 +38,6 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
         animZoomOut.setAnimationListener(SplashScreen.this);
 
         logo.startAnimation(animZoomOut);
-//        handler = new Handler();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent i = new Intent(SplashScreen.this, MainActivity.class);
-//                startActivity(i);
-//                finish();
-//            }
-//        }, SPLASH_SCREEN_TIME_OUT);
 
     }
 
@@ -64,6 +53,7 @@ public class SplashScreen extends AppCompatActivity implements Animation.Animati
 
             Intent i = new Intent(SplashScreen.this, MainActivity.class);
             startActivity(i);
+            finish();
             //Animatoo.animateSlideRight(SplashScreen.this);
         }
 
