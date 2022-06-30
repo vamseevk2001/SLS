@@ -226,8 +226,8 @@ public class MainActivity extends AppCompatActivity {
         binding.drivingLicense.getText().clear();
         binding.selfie.getText().clear();
         binding.signature.getText().clear();
-        binding.Home.setSelected(true);
-        binding.ottYes.setSelected(true);
+//        binding.Home.setSelected(true);
+//        binding.ottYes.setSelected(true);
         uris.clear();
         aadhaarURI = null;
         addressURI = null;
