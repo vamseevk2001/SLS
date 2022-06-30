@@ -10,20 +10,31 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.sls.databinding.ActivityMainBinding;
+import com.github.gcacace.signaturepad.views.SignaturePad;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -34,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     Boolean validated = false;
     private final static String TAG = "countryspinnerexample";
     private AutoCompleteTextView location;
+    SignaturePad signaturePad;
+    Button clearSign, saveSign;
 
     private static final int PICK_FROM_GALLERY = 101;
     private static final int ADDRESS = 102;
@@ -58,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     Uri drivingURI;
     Uri selfieURI;
     Uri signatureURI;
+    String signature;
     ArrayList<Uri> uris = new ArrayList<Uri>();
     File pictureDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "SLS_documents");
 
@@ -86,25 +100,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                validated = validate();
-//                if (validated) {
-                StringBuilder mailBody = new StringBuilder();
-                mailBody.append("Location : " + binding.center.getSelectedItem().toString() + "\n");
-                mailBody.append("Name : " + binding.nameInp.getText().toString() + "\n");
-                mailBody.append("Company Name : " + binding.companyName.getText().toString() + "\n");
-                mailBody.append("GST no. : " + binding.gstNo.getText().toString() + "\n");
-                mailBody.append("Address : \n" + binding.address.getText().toString() + "\n");
-                mailBody.append("Mobile No. : " + binding.mobileNo.getText().toString() + "\n");
-                mailBody.append("Email id : " + binding.email.getText().toString() + "\n");
-                if (binding.purpose.getCheckedRadioButtonId() == R.id.Home)
-                    mailBody.append("purpose :" + " Home" + "\n");
-                else
-                    mailBody.append("purpose :" + " Office" + "\n");
+                validated = validate();
+                if (validated) {
+                    StringBuilder mailBody = new StringBuilder();
+                    mailBody.append("Location : " + binding.center.getSelectedItem().toString() + "\n\n");
+                    mailBody.append("Name : " + binding.nameInp.getText().toString() + "\n\n");
+                    mailBody.append("Company Name : " + binding.companyName.getText().toString() + "\n\n");
+                    mailBody.append("GST no. : " + binding.gstNo.getText().toString() + "\n\n");
+                    mailBody.append("Address : \n" + binding.address.getText().toString() + "\n\n");
+                    mailBody.append("Mobile No. : " + binding.mobileNo.getText().toString() + "\n\n");
+                    mailBody.append("Email id : " + binding.email.getText().toString() + "\n\n");
+                    if (binding.purpose.getCheckedRadioButtonId() == R.id.Home)
+                        mailBody.append("purpose :" + " Home" + "\n\n");
+                    else
+                        mailBody.append("purpose :" + " Office" + "\n\n");
 
-                if (binding.ott.getCheckedRadioButtonId() == R.id.ottYes)
-                    mailBody.append("OTT required : " + "Yes" + "\n");
-                else
-                    mailBody.append("OTT required : " + "No" + "\n");
+                    if (binding.ott.getCheckedRadioButtonId() == R.id.ottYes)
+                        mailBody.append("OTT required : " + "Yes" + "\n\n");
+                    else
+                        mailBody.append("OTT required : " + "No" + "\n\n");
 
 
 //                    Uri uri = Uri.parse("mailto:" + "vamseevk9390@gmail.com")
@@ -113,37 +127,36 @@ public class MainActivity extends AppCompatActivity {
 //                            .appendQueryParameter("body", mailBody.toString())
 //                            .build();
 
-                Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
-                selectorIntent.setData(Uri.parse("mailto:"));
-                final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"vamseevk9390@gmail.com"});
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "New Connection Request");
+                    Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
+                    selectorIntent.setData(Uri.parse("mailto:"));
+                    final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"vamseevk9390@gmail.com"});
+                    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "New Connection Request");
 
 
+                    if (aadhaarURI != null) {
+                        uris.add(aadhaarURI);
+                    }
 
-                if (aadhaarURI != null) {
-                    uris.add(aadhaarURI);
-                }
+                    if (addressURI != null) {
+                        uris.add(addressURI);
+                    }
 
-                if (addressURI != null) {
-                    uris.add(addressURI);
-                }
+                    if (drivingURI != null) {
+                        uris.add(drivingURI);
+                    }
+                    if (selfieURI != null) {
+                        uris.add(selfieURI);
+                    }
 
-                if (drivingURI != null) {
-                    uris.add(drivingURI);
-                }
-                if (selfieURI != null) {
-                    uris.add(selfieURI);
-                }
+                    if (signatureURI != null) {
+                        uris.add(signatureURI);
 
-                if (signatureURI != null) {
-                    uris.add(signatureURI);
-
-                    //emailIntent.putExtra(Intent.EXTRA_STREAM, signatureURI);
-                }
-                Intent chooser = Intent.createChooser(emailIntent, "Sending email...");
-                List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+                        //emailIntent.putExtra(Intent.EXTRA_STREAM, signatureURI);
+                    }
+                    Intent chooser = Intent.createChooser(emailIntent, "Sending email...");
+                    List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
 
 //                for(Uri uri:uris) {
 //
@@ -152,14 +165,10 @@ public class MainActivity extends AppCompatActivity {
 //                        getApplicationContext().grantUriPermission(packageName, aadhaarURI, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //                    }
 //                }
-                chooser.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mailBody.toString());
-                emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-                emailIntent.setSelector(selectorIntent);
-
-
-
-
+                    chooser.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mailBody.toString());
+                    emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                    emailIntent.setSelector(selectorIntent);
 
 
 //                    if (emailIntent.resolveActivity(getPackageManager()) != null) {
@@ -167,13 +176,10 @@ public class MainActivity extends AppCompatActivity {
 //                    } else {
 //                        Toast.makeText(getApplicationContext(), "Sorry, We couldn't find any email client apps!", Toast.LENGTH_SHORT).show();
 //                    }
-                startActivity(chooser);
-                clear();
-                aadhaarURI = null;
-                addressURI = null;
-                drivingURI = null;
-                selfieURI = null;
-                signatureURI = null;
+                    startActivity(chooser);
+                    clear();
+
+                }
 
             }
         });
@@ -223,6 +229,13 @@ public class MainActivity extends AppCompatActivity {
         binding.Home.setSelected(true);
         binding.ottYes.setSelected(true);
         uris.clear();
+        aadhaarURI = null;
+        addressURI = null;
+        drivingURI = null;
+        selfieURI = null;
+        signatureURI = null;
+        binding.purpose.clearCheck();
+        binding.ott.clearCheck();
 
 
     }
@@ -406,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (requestCode == GALLERY_SELFIE && resultCode == RESULT_OK) {
-            drivingURI = data.getData();
+            selfieURI = data.getData();
             Cursor returnCursor =
                     getContentResolver().query(selfieURI, null, null, null, null);
 
@@ -507,15 +520,15 @@ public class MainActivity extends AppCompatActivity {
 //            binding.selfie.setText(returnCursor.getString(nameIndex));
 //        }
 
-        if (requestCode == SIGNATURE && resultCode == RESULT_OK) {
-            signatureURI = data.getData();
-            Cursor returnCursor =
-                    getContentResolver().query(signatureURI, null, null, null, null);
-
-            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            returnCursor.moveToFirst();
-            binding.signature.setText(returnCursor.getString(nameIndex));
-        }
+//        if (requestCode == SIGNATURE && resultCode == RESULT_OK) {
+//            signatureURI = data.getData();
+//            Cursor returnCursor =
+//                    getContentResolver().query(signatureURI, null, null, null, null);
+//
+//            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+//            returnCursor.moveToFirst();
+//            binding.signature.setText(returnCursor.getString(nameIndex));
+//        }
 
 
     }
@@ -556,7 +569,92 @@ public class MainActivity extends AppCompatActivity {
         selectFile(GALLERY_SELFIE, TAKE_PHOTO_SELFIE, "selfie.jpg");
     }
 
-    public void uploadsignature(View view) {
-        selectImage(SIGNATURE);
+    public void uploadsignature(View v) {
+        //selectImage(SIGNATURE);
+
+//        View newHelp = LayoutInflater.from(this).inflate(R.layout.signature_dialog_box, null);
+//        final AlertDialog addNewHelp = new AlertDialog.Builder(getApplicationContext()).create();
+//        addNewHelp.setView(newHelp);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+        View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.signature_dialog_box, viewGroup, false);
+        builder.setView(dialogView);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        signaturePad = dialogView.findViewById(R.id.signaturePad);
+        signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+            @Override
+            public void onStartSigning() {
+
+            }
+
+            @Override
+            public void onSigned() {
+
+            }
+
+            @Override
+            public void onClear() {
+                Toast.makeText(getApplicationContext(), "Signature cleared", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        clearSign = dialogView.findViewById(R.id.clearSign);
+        saveSign = dialogView.findViewById(R.id.saveSign);
+
+        clearSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signaturePad.clear();
+            }
+        });
+
+        saveSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signature = saveImage(signaturePad.getSignatureBitmap());
+                File image = new File(pictureDir, "signature.jpg");
+                signatureURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
+                binding.signature.setText("signature.jpg");
+                alertDialog.dismiss();
+            }
+
+        });
+
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+
+    }
+
+    public String saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+//        File wallpaperDirectory = new File(
+//                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY /*iDyme folder*/);
+        // have the object build the directory structure, if needed.
+//        if (!wallpaperDirectory.exists()) {
+//            wallpaperDirectory.mkdirs();
+//            Log.d("hhhhh",wallpaperDirectory.toString());
+//        }
+
+        try {
+            File f = new File(pictureDir, "signature.jpg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(MainActivity.this,
+                    new String[]{f.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            Toast.makeText(getApplicationContext(), "Signature saved successfully", Toast.LENGTH_SHORT).show();
+
+            return f.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+
     }
 }
