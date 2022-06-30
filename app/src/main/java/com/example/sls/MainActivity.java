@@ -351,9 +351,8 @@ public class MainActivity extends AppCompatActivity {
 //                    StrictMode.setVmPolicy(builder.build());
                     Intent cameraPicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File image = new File(pictureDir, fileName);
-                    aadhaarURI = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider",
-                            image);
-                    cameraPicture.putExtra(MediaStore.EXTRA_OUTPUT,aadhaarURI);
+                    cameraPicture.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider",
+                            image));
                     startActivityForResult(cameraPicture, camera);
 //                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                    File image = new File(pictureDir, "Aadhaar.jpg");
@@ -409,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == GALLERY_SELFIE && resultCode == RESULT_OK) {
             drivingURI = data.getData();
             Cursor returnCursor =
-                    getContentResolver().query(drivingURI, null, null, null, null);
+                    getContentResolver().query(selfieURI, null, null, null, null);
 
             int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             returnCursor.moveToFirst();
@@ -452,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
             File image = new File(pictureDir, "Address.jpg");
             //aadhaarURI = Uri.fromFile(image);
             //aadhaarURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", createImageFile());
-            aadhaarURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
+            addressURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
             binding.addressProof.setText("Address.jpg");
             // Set the image in imageview for display
         }
@@ -472,7 +471,7 @@ public class MainActivity extends AppCompatActivity {
             File image = new File(pictureDir, "gst.jpg");
             //aadhaarURI = Uri.fromFile(image);
             //aadhaarURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", createImageFile());
-            aadhaarURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
+            drivingURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
             binding.drivingLicense.setText("gst.jpg");
             // Set the image in imageview for display
         }
@@ -492,21 +491,21 @@ public class MainActivity extends AppCompatActivity {
             File image = new File(pictureDir, "selfie.jpg");
             //aadhaarURI = Uri.fromFile(image);
             //aadhaarURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", createImageFile());
-            aadhaarURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
+            selfieURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
             binding.selfie.setText("selfie.jpg");
             // Set the image in imageview for display
         }
 
 
-        if (requestCode == GALLERY_SELFIE && resultCode == RESULT_OK) {
-            selfieURI = data.getData();
-            Cursor returnCursor =
-                    getContentResolver().query(selfieURI, null, null, null, null);
-
-            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            returnCursor.moveToFirst();
-            binding.selfie.setText(returnCursor.getString(nameIndex));
-        }
+//        if (requestCode == GALLERY_SELFIE && resultCode == RESULT_OK) {
+//            selfieURI = data.getData();
+//            Cursor returnCursor =
+//                    getContentResolver().query(selfieURI, null, null, null, null);
+//
+//            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+//            returnCursor.moveToFirst();
+//            binding.selfie.setText(returnCursor.getString(nameIndex));
+//        }
 
         if (requestCode == SIGNATURE && resultCode == RESULT_OK) {
             signatureURI = data.getData();
