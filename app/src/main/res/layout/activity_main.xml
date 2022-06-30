@@ -37,6 +37,19 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="CUSTOMER APPLICATION FORM "
+                android:textColor="@color/blue"
+                android:gravity="center_horizontal"
+                android:textSize="22sp"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        binding.toolbar.setTitle("Smart Link Solutions");
+        binding.toolbar.setTitle("Smart Link Solutions pvt ltd");
         setContentView(view);
 
 
