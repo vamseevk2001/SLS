@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView location;
     SignaturePad signaturePad;
     Button clearSign, saveSign;
+    Boolean aadhaar = false;
 
     private static final int PICK_FROM_GALLERY = 101;
     private static final int ADDRESS = 102;
@@ -66,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAKE_PHOTO_SELFIE = 115;
     //private static final int TAKE_PHOTO_SIGNATURE = 116;
     private static final int REQUEST_EXTERNAL_STORAGE_RESULT = 1;
-    Uri aadhaarURI;
+    Uri aadhaarURI_front;
+    Uri aadhaarURI_back;
     Uri addressURI;
     Uri drivingURI;
     Uri selfieURI;
@@ -135,8 +135,11 @@ public class MainActivity extends AppCompatActivity {
                     emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "New Connection Request");
 
 
-                    if (aadhaarURI != null) {
-                        uris.add(aadhaarURI);
+                    if (aadhaarURI_front != null) {
+                        uris.add(aadhaarURI_front);
+                    }
+                    if (aadhaarURI_back != null) {
+                        uris.add(aadhaarURI_back);
                     }
 
                     if (addressURI != null) {
@@ -229,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 //        binding.Home.setSelected(true);
 //        binding.ottYes.setSelected(true);
         uris.clear();
-        aadhaarURI = null;
+        aadhaarURI_front = null;
         addressURI = null;
         drivingURI = null;
         selfieURI = null;
@@ -362,11 +365,30 @@ public class MainActivity extends AppCompatActivity {
 
 //                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
 //                    StrictMode.setVmPolicy(builder.build());
-                    Intent cameraPicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File image = new File(pictureDir, fileName);
-                    cameraPicture.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider",
-                            image));
-                    startActivityForResult(cameraPicture, camera);
+
+                    if(aadhaar){
+                        Intent aadhaarFront = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        Toast.makeText(getApplicationContext(), "Front side of aadhaar", Toast.LENGTH_LONG).show();
+                        File front = new File(pictureDir, "front_"+fileName);
+                        File back = new File(pictureDir, "back_"+fileName);
+                        aadhaarFront.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider",
+                                front));
+                        startActivityForResult(aadhaarFront, camera+101);
+
+                        Toast.makeText(getApplicationContext(), "Back side of aadhaar", Toast.LENGTH_LONG).show();
+                        Intent aadhaarBack = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        aadhaarBack.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider",
+                                back));
+                        startActivityForResult(aadhaarBack, camera+102);
+                        aadhaar = false;
+                    }
+                    else {
+                        Intent cameraPicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File image = new File(pictureDir, fileName);
+                        cameraPicture.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider",
+                                image));
+                        startActivityForResult(cameraPicture, camera);
+                    }
 //                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                    File image = new File(pictureDir, "Aadhaar.jpg");
 //                    aadhaarURI = Uri.fromFile(image);
@@ -386,9 +408,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GALLERY_AADHAAR && resultCode == RESULT_OK) {
-            aadhaarURI = data.getData();
+            aadhaarURI_front = data.getData();
             Cursor returnCursor =
-                    getContentResolver().query(aadhaarURI, null, null, null, null);
+                    getContentResolver().query(aadhaarURI_front, null, null, null, null);
 
             int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             returnCursor.moveToFirst();
@@ -429,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        if (requestCode == TAKE_PHOTO_AADHAAR && resultCode == RESULT_OK) {
+        if (requestCode == TAKE_PHOTO_AADHAAR+101 && resultCode == RESULT_OK) {
 //            aadhaarURI = data.getData();
 //            Cursor returnCursor =
 //                    getContentResolver().query(aadhaarURI, null, null, null, null);
@@ -441,10 +463,30 @@ public class MainActivity extends AppCompatActivity {
 //            Bitmap photo = (Bitmap) data.getExtras()
 //                    .get("data");
 
-            File image = new File(pictureDir, "Aadhaar.jpg");
+            File image = new File(pictureDir, "front_Aadhaar.jpg");
             //aadhaarURI = Uri.fromFile(image);
             //aadhaarURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", createImageFile());
-            aadhaarURI = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
+            aadhaarURI_front = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
+            binding.aadharCard.setText("Aadhaar.jpg");
+            // Set the image in imageview for display
+        }
+
+        if (requestCode == TAKE_PHOTO_AADHAAR+102 && resultCode == RESULT_OK) {
+//            aadhaarURI = data.getData();
+//            Cursor returnCursor =
+//                    getContentResolver().query(aadhaarURI, null, null, null, null);
+//
+//            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+//            returnCursor.moveToFirst();
+//            binding.aadharCard.setText(returnCursor.getString(nameIndex));
+
+//            Bitmap photo = (Bitmap) data.getExtras()
+//                    .get("data");
+
+            File image = new File(pictureDir, "back_Aadhaar.jpg");
+            //aadhaarURI = Uri.fromFile(image);
+            //aadhaarURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", createImageFile());
+            aadhaarURI_back = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", image);
             binding.aadharCard.setText("Aadhaar.jpg");
             // Set the image in imageview for display
         }
@@ -541,6 +583,7 @@ public class MainActivity extends AppCompatActivity {
 //        pdfIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
 //        pdfIntent.addCategory(Intent.CATEGORY_OPENABLE);
 //        startActivityForResult(pdfIntent, AADHAAR);
+        aadhaar = true;
         selectFile(GALLERY_AADHAAR, TAKE_PHOTO_AADHAAR, "Aadhaar.jpg");
     }
 

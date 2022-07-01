@@ -146,8 +146,6 @@
                 android:hint="GST NO."
                 app:layout_constraintStart_toStartOf="parent">
 
-                addressProof
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/gstNo"
                     android:layout_width="match_parent"
